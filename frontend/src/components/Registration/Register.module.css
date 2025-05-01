@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+body {
+    font-family: 'Rubik', serif;
+    font-size: 10px;
+}
+
+input:not([type='checkbox']),
+select,
+button {
+    width: 100%;
+    border: none;
+    outline: none;
+    border-radius: 15px;
+    padding: 0.4em;
+    background-color: rgba(0,0,0,0.1);
+    transition: 300ms ease-in-out;
+}
+
+input:not([type='checkbox']):focus,
+button:focus {
+    box-shadow: inset 2px 5px 10px rgba(0,0,0,0.3);
+}
+
+.registration-form {
+    font-size: 2em;
+    padding: 2rem;
+}
+
+.registration-form__container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.registration-form__title  {
+    margin: 0;
+}
+
+.registration-form__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+} 

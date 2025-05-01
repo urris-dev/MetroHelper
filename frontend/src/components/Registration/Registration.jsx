@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import styles from './Register.module.css';
+import '../normalize.css';
 
 function Registration() {
     const [userType, setUserType] = useState('passenger');
@@ -19,17 +21,17 @@ function Registration() {
         }};
 
     return (
-        <div className="registration-form">
-            <div className="registration-form__container">
-                <h2 className="registration-form__title">Регистрация</h2>
-                <Link to="/login" className="registration-form__login-link">
+        <div className={styles['registration-form']}>
+            <div className={styles['registration-form__container']}>
+                <h2 className={styles['registration-form__title']}>Регистрация</h2>
+                <Link to="/login" className={styles['registration-form__login-link']}>
                     Уже зарегистрированы? Войти.
                 </Link>
-                <form className="registration-form__form">
-                    <div className="registration-form__field">
-                        <label htmlFor="userType" className="registration-form__label">Тип пользователя:</label>
+                <form className={styles['registration-form__form']}>
+                    <div className={styles['registration-form__field']}>
+                        <label htmlFor="userType" className={styles['registration-form__label']}>Тип пользователя:</label>
                         <select
-                            className="registration-form__select"
+                            className={styles['registration-form__select']}
                             id="userType"
                             name="userType"                          
                             
@@ -40,7 +42,7 @@ function Registration() {
                             <option value="employee">Сотрудник</option>
                         </select>
                     </div>                    
-                    <div className="registration-form__field">
+                    <div className={styles['registration-form__field']}>
                         <label htmlFor="fullName">ФИО:</label>
                         <input
                             type="text"
@@ -50,7 +52,7 @@ function Registration() {
                             required
                         />
                     </div>                    
-                    <div className="registration-form__field">
+                    <div className={styles['registration-form__field']}>
                         <label htmlFor="email">Электронная почта:</label>
                         <input
                             type="email"
@@ -60,7 +62,7 @@ function Registration() {
                             required
                         />
                     </div>                    
-                    <div className="registration-form__field">
+                    <div className={styles['registration-form__field']}>
                         <label htmlFor="password">Введите пароль:</label>
                         <input
                             type={passwordType}
@@ -70,7 +72,7 @@ function Registration() {
                             required
                         />
                     </div>                    
-                    <div className="registration-form__field">
+                    <div className={styles['registration-form__field']}>
                         <label htmlFor="confirmPassword">Подтвердите пароль:</label>
                         <input
                             type={passwordType}
@@ -87,13 +89,13 @@ function Registration() {
                             <span>Показать пароль</span>
                         </label>
                     </div>                    
-                    <div className="registration-form__field">
+                    <div className={styles['registration-form__field']}>
                         <label htmlFor="photo">Фото:</label>
                         <input
-                            className="registration-form__input"
+                            className={styles['registration-form__input']}
                             type="file"
                             id="photo"
-                            placeholder="Добавьте фото"                            
+                            required
                             />
                     </div>
                     
@@ -109,31 +111,6 @@ function Registration() {
                             </select>
                         </div>
                     )}
-
-                    {userType === 'employee' && (
-                        <div className="registration-form__employee-fields">
-                           <span>Укажите Ваш график работы</span>
-                                
-                                <div className="registration-form__field">
-                                    <label htmlFor="scheduleFrom">Начало:</label>
-                                    <input
-                                        type="time"
-                                        id="scheduleFrom"
-                                        name="scheduleFrom"
-                                        
-                                        />
-                                </div>
-                                    <div className="registration-form__field">
-                                        <label htmlFor="scheduleTo">Конец</label>
-                                        <input
-                                        type="time"
-                                        id="scheduleTo"
-                                        name="scheduleTo"
-                                                                           
-                                        />
-                                    </div>
-                            </div>
-                        )}
                     <button
                         type="submit">
                         Зарегистрироваться
