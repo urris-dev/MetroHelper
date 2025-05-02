@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import RegistrationForm from './Form.jsx';
+import useRegistration from '../../hooks/registration.js';
 import styles from './Register.module.css';
 import '../normalize.css';
 
 function Registration() {
-    const [userType, setUserType] = useState('passenger');
-    const [showPassword, setShowPassword] = useState(false);
-    const [passwordType, setPasswordType] = useState("password");
-
-    const handleUserTypeChange = (event) => {
-        setUserType(event.target.value);
-    };
-
-    const handleShowPasswordChange = () => {
-        setShowPassword(!showPassword);
-         if (showPassword) {
-            setPasswordType("password");
-        } else {
-            setPasswordType("text");
-        }};
+    const {
+        userType,
+        showPassword,
+        passwordType,
+        error,
+        loading,
+        isModalOpen,
+        setUserType,
+        togglePasswordVisibility,
+        handleRegister,
+        handleCloseModal,
+        handlePhotoChange,
+    } = useRegistration();
 
     return (
         <div className={styles['registration-form']}>
@@ -27,95 +27,19 @@ function Registration() {
                 <Link to="/login" className={styles['registration-form__login-link']}>
                     Уже зарегистрированы? Войти.
                 </Link>
-                <form className={styles['registration-form__form']}>
-                    <div className={styles['registration-form__field']}>
-                        <label htmlFor="userType" className={styles['registration-form__label']}>Тип пользователя:</label>
-                        <select
-                            className={styles['registration-form__select']}
-                            id="userType"
-                            name="userType"                          
-                            
-                            value={userType}
-                            onChange={handleUserTypeChange}
-                        >                   
-                            <option value="passenger">Пассажир</option>
-                            <option value="employee">Сотрудник</option>
-                        </select>
-                    </div>                    
-                    <div className={styles['registration-form__field']}>
-                        <label htmlFor="fullName">ФИО:</label>
-                        <input
-                            type="text"
-                            id="fullName"
-                            name="fullName"
-                            
-                            required
-                        />
-                    </div>                    
-                    <div className={styles['registration-form__field']}>
-                        <label htmlFor="email">Электронная почта:</label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            
-                            required
-                        />
-                    </div>                    
-                    <div className={styles['registration-form__field']}>
-                        <label htmlFor="password">Введите пароль:</label>
-                        <input
-                            type={passwordType}
-                            id="password"
-                            name="password"
-                            
-                            required
-                        />
-                    </div>                    
-                    <div className={styles['registration-form__field']}>
-                        <label htmlFor="confirmPassword">Подтвердите пароль:</label>
-                        <input
-                            type={passwordType}
-                            id="confirmPassword"
-                            name="confirmPassword"
-                            
-                            required
-                        />
-                    </div>
-                     
-                    <div>
-                        <label htmlFor="showPassword">
-                            <input type="checkbox" id="showPassword" onChange={handleShowPasswordChange}/>
-                            <span>Показать пароль</span>
-                        </label>
-                    </div>                    
-                    <div className={styles['registration-form__field']}>
-                        <label htmlFor="photo">Фото:</label>
-                        <input
-                            className={styles['registration-form__input']}
-                            type="file"
-                            id="photo"
-                            required
-                            />
-                    </div>
-                    
-                    {userType === 'passenger' && (
-                        <div>
-                            <label htmlFor="passengerType">Тип пассажира:</label>
-                            <select
-                                id="passengerType"
-                                name="passengerType"
-                                >
-                                <option value="visuallyImpaired">Слабовидящий пассажир</option>
-                                <option value="wheelchairUser">Пассажир-колясочник</option>
-                            </select>
-                        </div>
-                    )}
-                    <button
-                        type="submit">
-                        Зарегистрироваться
-                    </button>
-                </form>
+                <RegistrationForm
+                    userType={userType}
+                    setUserType={setUserType}
+                    showPassword={showPassword}
+                    passwordType={passwordType}
+                    togglePasswordVisibility={togglePasswordVisibility}
+                    handleRegister={handleRegister}
+                    loading={loading}
+                    error={error}
+                    handleCloseModal={handleCloseModal}
+                    isModalOpen={isModalOpen}
+                    handlePhotoChange={handlePhotoChange}
+                />
             </div>
         </div>                                    
     );

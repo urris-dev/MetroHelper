@@ -1,11 +1,13 @@
 import React, {useState} from "react";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styles from './Login.module.css';
 import '../normalize.css';
 
 function Login() {
     const [showPassword, setShowPassword] = useState(false);
     const [passwordType, setPasswordType] = useState("password");
+    const location = useLocation();
+    const email = location.state?.email;
     
     const handleShowPasswordChange = () => {
     setShowPassword(!showPassword);
@@ -23,7 +25,7 @@ function Login() {
       <form className={styles['login-form']}>
         <div className={styles['input-group']}>
           <label htmlFor="email">Электронная почта:</label>
-          <input type="email" id="email" name="email" required />
+          <input type="email" id="email" name="email" required value={email}/>
         </div>
         <div className={styles['input-group']}>
           <label htmlFor="password">Пароль:</label>
