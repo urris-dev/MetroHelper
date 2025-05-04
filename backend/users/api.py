@@ -1,0 +1,19 @@
+from fastapi import APIRouter, UploadFile, File, Form
+
+from . import schemas, services
+
+
+user_router = APIRouter(
+    prefix="/api/users",
+    tags=["users"]
+)
+
+
+@user_router.post("/register", responses={409: {}})
+async def register(user: schemas.UserRegister):
+    return await services.create_user(user)
+
+
+@user_router.post("/set-user-photo")
+async def set_user_photo(email: str = Form(...), userType: str = Form(...), photo: UploadFile = File(...)):
+    return await services.save_user_photo(email, userType, photo)

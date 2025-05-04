@@ -1,6 +1,6 @@
 import { use, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { registerUser } from '../api/authApi';
+import { registerUser, setUserPhoto } from '../api/authApi';
 
 const useRegistration = () => {
   const [userType, setUserType] = useState('passenger');
@@ -20,9 +20,19 @@ const useRegistration = () => {
     if (formData.password !== formData.confirmPassword) {
       throw new Error('Пароли не совпадают');
     }
-    
     if (formData.password.trim().length < 8) {
       throw new Error('Минимальная длина пароля - 8 символов');
+    }
+    if (formData.password.trim().length > 60) {
+      throw new Error('Максимальная длина пароля - 60 символов');
+    }
+
+    if (formData.fullName.length > 100) {
+      throw new Error('Максимальная длина ФИО - 100 символов');
+    }
+
+    if (formData.email.length > 256) {
+      throw new Error('Максимальная длина почты - 256 символов');
     }
   };
 
@@ -32,19 +42,26 @@ const useRegistration = () => {
       setError(null);
       validateForm(formData);
       
-      const payload = new FormData();
-      payload.append('fullname', formData.fullName);
-      payload.append('email', formData.email);
-      payload.append('password', formData.password);
-      payload.append('photo', formData.photo);
-      payload.append('userType', userType);
+      let payload = new Object();
+      payload['fullname'] = formData.fullName;
+      payload['email'] = formData.email;
+      payload['password'] = formData.password;
+      payload['userType'] = formData.userType;
       if (userType === 'passenger') {
-        payload.append('passengerType', formData.passengerType);
+        payload['passengerType'] = formData.passengerType;
       }
-      
       await registerUser(payload);
+      
+      payload = new FormData();
+      payload.append('email', formData.email);
+      payload.append('userType', formData.userType);
+      payload.append('photo', formData.photo);
+      await setUserPhoto(payload);
       navigate('/login', {state: {email: formData.email}});      
     } catch (err) {
+      if (err.message == '409 Error') {
+        navigate('/login', {state: {email: formData.email}});
+      }
       setError(err.message);
       setIsModalOpen(true);
     } finally {

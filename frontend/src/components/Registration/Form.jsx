@@ -20,6 +20,8 @@ const RegistrationForm = ({
     password: '',
     confirmPassword: '',
     photo: null,
+    userType: 'passenger',
+    passengerType: 'Слабовидящий'
   });
 
   const photoRef = useRef(null);
@@ -137,10 +139,9 @@ const RegistrationForm = ({
             id="passengerType"
             name="passengerType"
             onChange={handleChange}
-            className={styles.select}
           >
-            <option value="visuallyImpaired">Слабовидящий пассажир</option>
-            <option value="wheelchairUser">Пассажир-колясочник</option>
+            <option value="Слабовидящий">Слабовидящий пассажир</option>
+            <option value="Колясочник">Пассажир-колясочник</option>
           </select>
         </div>
       )}
