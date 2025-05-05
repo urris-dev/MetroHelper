@@ -4,6 +4,7 @@ from fastapi.exceptions import HTTPException
 from os import mkdir, path
 from typing import Union
 
+import oauth2
 from config import settings
 from . import models, schemas, utils, _BASE_DIR
 
@@ -50,3 +51,24 @@ async def create_user(user: schemas.UserRegister) -> Union[HTTPException, Respon
 
     mkdir(path.join(_BASE_DIR, "media", user.email))
     return Response(status_code=200)
+
+
+async def login_user(user: schemas.UserLogin, Authorize: oauth2.AuthJWT) -> Union[HTTPException, Response]:
+    try:
+        if user.userType == 'employee':
+            _user = await models.Employee.objects.get(email=user.email)
+        elif user.userType == 'passenger':
+            _user = await models.Passenger.objects.get(email=user.email)
+    except:
+        raise HTTPException(status_code=400, detail="Неправильная почта или пароль.")
+    
+    if not(await utils.verify_data(user.password, _user.password)):
+        raise HTTPException(status_code=400, detail="Неправильная почта или пароль.")
+    
+    access_token = Authorize.create_access_token(subject=user.email)
+    refresh_token = Authorize.create_refresh_token(subject=user.email)
+    response = Response(status_code=200)
+    Authorize.set_access_cookies(access_token, response, max_age=JWT_ACCESS_TOKEN_EXPIRES_IN)
+    Authorize.set_refresh_cookies(refresh_token, response, max_age=JWT_REFRESH_TOKEN_EXPIRES_IN)
+
+    return response

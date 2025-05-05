@@ -1,4 +1,4 @@
-import { use, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { registerUser, setUserPhoto } from '../api/authApi';
 
@@ -57,7 +57,15 @@ const useRegistration = () => {
       payload.append('userType', formData.userType);
       payload.append('photo', formData.photo);
       await setUserPhoto(payload);
-      navigate('/login', {state: {email: formData.email}});      
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64String = reader.result;
+        localStorage.setItem('userPhoto', base64String);
+      };
+      reader.readAsDataURL(formData.photo);
+
+      navigate('/login', {state: {email: formData.email, userType: formData.userType}});      
     } catch (err) {
       if (err.message == '409 Error') {
         navigate('/login', {state: {email: formData.email}});
@@ -83,9 +91,9 @@ const useRegistration = () => {
       throw new Error();
     }
   
-    const maxSize = 5 * 1024 * 1024;
+    const maxSize = 3 * 1024 * 1024;
     if (file.size > maxSize) {
-      setError('Размер файла не должен превышать 5Мб');
+      setError('Размер файла не должен превышать 3Мб');
       setIsModalOpen(true);
       throw new Error();
     }

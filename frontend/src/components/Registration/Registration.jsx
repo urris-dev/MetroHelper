@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import RegistrationForm from './Form.jsx';
 import useRegistration from '../../hooks/registration.js';
-import styles from './Register.module.css';
+import styles from './Registration.module.css';
 import '../normalize.css';
 
 function Registration() {

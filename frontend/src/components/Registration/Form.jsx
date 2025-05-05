@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
-import styles from './Register.module.css';
-import Modal from './Modal.jsx';
+import styles from './Registration.module.css';
+import Modal from '../common/Modal/Modal.jsx';
 
 const RegistrationForm = ({ 
   userType, 
@@ -28,7 +28,6 @@ const RegistrationForm = ({
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    
     if (name === 'photo') {
       try {
         handlePhotoChange(e);
@@ -41,9 +40,9 @@ const RegistrationForm = ({
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    handleRegister(formData);
+    await handleRegister(formData);
   };
 
   return (
@@ -56,6 +55,7 @@ const RegistrationForm = ({
           value={userType}
           onChange={(e) => {
             setUserType(e.target.value);
+            handleChange(e);
           }}
           className={styles['registration-form__select']}
         >
