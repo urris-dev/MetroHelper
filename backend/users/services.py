@@ -1,7 +1,7 @@
 from fastapi import UploadFile
 from fastapi.responses import Response
 from fastapi.exceptions import HTTPException
-from os import mkdir, path
+from os import mkdir, path, rename
 from typing import Union
 
 import oauth2
@@ -72,3 +72,58 @@ async def login_user(user: schemas.UserLogin, Authorize: oauth2.AuthJWT) -> Unio
     Authorize.set_refresh_cookies(refresh_token, response, max_age=JWT_REFRESH_TOKEN_EXPIRES_IN)
 
     return response
+
+
+async def logout_user(Authorize: oauth2.AuthJWT) -> Response:
+    response = Response(status_code=200) 
+    Authorize.unset_jwt_cookies(response)
+    return response 
+
+
+async def recreate_tokens(Authorize: oauth2.AuthJWT) -> Response:
+    email = Authorize.get_jwt_subject()
+    access_token = Authorize.create_access_token(subject=email)
+    refresh_token = Authorize.create_refresh_token(subject=email)
+    response = Response(status_code=200)
+    Authorize.set_access_cookies(access_token, response, max_age=JWT_ACCESS_TOKEN_EXPIRES_IN)
+    Authorize.set_refresh_cookies(refresh_token, response, max_age=JWT_REFRESH_TOKEN_EXPIRES_IN)
+
+    return response
+
+
+async def edit_user(user: schemas.UserEdit, Authorize: oauth2.AuthJWT) -> Response:
+    email = Authorize.get_jwt_subject()
+    try:
+        _user = await models.Passenger.objects.get(email=email)
+    except:
+        _user = await models.Employee.objects.get(email=email)
+
+    response = Response(status_code=200)
+    if user.email != "":
+        _user.email = user.email
+
+        access_token = Authorize.create_access_token(subject=user.email)
+        refresh_token = Authorize.create_refresh_token(subject=user.email)
+        Authorize.set_access_cookies(access_token, response, max_age=JWT_ACCESS_TOKEN_EXPIRES_IN)
+        Authorize.set_refresh_cookies(refresh_token, response, max_age=JWT_REFRESH_TOKEN_EXPIRES_IN)
+    
+        rename(path.join(_BASE_DIR, "media", email), path.join(_BASE_DIR, "media", user.email))
+        _user.photo = path.join("media", user.email, "avatar.png")
+    if user.password != "":
+        _user.password = await utils.hash_data(user.password)
+    await _user.update(['email', 'password', 'photo'])
+
+    return response
+
+
+async def change_user_photo(photo: UploadFile, Authorize: oauth2.AuthJWT) -> Response:
+    email = Authorize.get_jwt_subject()
+    try:
+        user = await models.Passenger.objects.get(email=email)
+    except:
+        user = await models.Employee.objects.get(email=email)
+    file_path = path.join(_BASE_DIR, user.photo)
+    with open(file_path, "wb") as f:
+        f.write(await photo.read())
+
+    return Response(status_code=200)

@@ -1,5 +1,9 @@
+import {useNavigate} from 'react-router-dom';
+
+const API_URL = 'http://localhost:8000/api/users';
+
 export const registerUser = async (payload) => {
-  const response = await fetch('http://127.0.0.1:8000/api/users/register', {
+  const response = await fetch(`${API_URL}/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -15,15 +19,8 @@ export const registerUser = async (payload) => {
     }    
   };
 
-export const setUserPhoto = async (formData) => {
-  await fetch('http://127.0.0.1:8000/api/users/set-user-photo', {
-    method: 'POST',
-    body: formData
-  });  
-};
-
 export const loginUser = async (payload) => {
-  const response = await fetch('http://127.0.0.1:8000/api/users/login', {
+  const response = await fetch(`${API_URL}/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -39,3 +36,24 @@ export const loginUser = async (payload) => {
     throw new Error(response.statusText);
   } 
 };
+
+export const logoutUser = async () => {
+  await fetch(`${API_URL}/logout`, {
+    method: 'DELETE',
+    credentials: 'include',
+  });
+}
+
+export const refreshUser = async () => {
+  const navigate = useNavigate();
+  const response = await fetch(`${API_URL}/refresh`, {
+    method: 'POST',
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    if (response.status == 401) {
+      navigate('/login');
+    }
+  } 
+}

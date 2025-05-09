@@ -16,7 +16,7 @@ const LoginForm = ({
   const email = location.state?.email;
   const userType = location.state?.userType;
   const [formData, setFormData] = useState({
-    userType: userType,
+    userType: userType || 'passenger',
     email: email,
     password: '',
   });

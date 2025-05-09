@@ -39,31 +39,6 @@
     padding: 0rem 1rem;
 }
 
-.main__user-profile-edit-form {
-    display: flex;
-    flex-direction: column;
-    row-gap: 2rem;
-    padding: 0rem 1rem;
-}
-
-.user-profile-edit-form__photo-input{
-    display: flex;
-    flex-direction: column;
-    row-gap: 1rem;
-}
-
-.user-profile-edit-form__photo-input label {
-    width: fit-content;
-    align-self: center;
-    border: 0.1rem solid rgba(0,0,0,0.1);
-    border-radius: 50%;
-    padding: 5%;
-}
-
-.user-profile-edit-form__photo-input input {
-    display: none;
-}
-
 .workspace__footer {
     grid-row: 5;
 }

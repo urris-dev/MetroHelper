@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { registerUser, setUserPhoto } from '../api/authApi';
+import { registerUser } from '../api/authApi';
+import { setUserPhoto } from '../api/userApi';
 
 const useRegistration = () => {
   const [userType, setUserType] = useState('passenger');

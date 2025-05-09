@@ -31,3 +31,15 @@ class UserLogin(BaseModel):
         if not fullmatch(pattern, value):
             raise ValueError("Неверный формат пароля.")
         return value
+
+
+class UserEdit(BaseModel):
+    email: Optional[Annotated[EmailStr, Field(max_length=255)]] = ""
+    password: Optional[Annotated[str, Field(min_length=8, max_length=60)]] = ""
+
+    @field_validator("password", mode="before")
+    def validate_pswd(cls, value):
+        pattern = settings.REGEX_PASSWORD_TEMPLATE
+        if not fullmatch(pattern, value):
+            raise ValueError("Неверный формат пароля.")
+        return value
