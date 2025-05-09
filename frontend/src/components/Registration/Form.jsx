@@ -154,7 +154,7 @@ const RegistrationForm = ({
       </button>
 
       {isModalOpen && (
-        <Modal message={error} onClose={handleCloseModal} />
+        <Modal type="error" message={error} onClose={handleCloseModal} />
       )}
     </form>
   );

@@ -4,7 +4,7 @@ import styles from './ProfileEdit.module.css';
 import { useProfileEdit } from '../../hooks/profileEdit.js';
 
 const ProfileEdit = () => {
-  const { photoPreview, handlePhotoChange, error, loading, handleEdit, handleLogout, isModalOpen, handleCloseModal, passwordType, togglePasswordVisibility } = useProfileEdit();
+  const { photoPreview, handlePhotoChange, error, loading, handleEdit, handleLogout, success, handleCloseModal, passwordType, togglePasswordVisibility } = useProfileEdit();
   return (
     <div className={styles.workspace}>
       <main className={styles.workspace__main}>
@@ -15,7 +15,7 @@ const ProfileEdit = () => {
           loading={loading}
           handleEdit={handleEdit}
           handleLogout={handleLogout}
-          isModalOpen={isModalOpen}
+          success={success}
           handleCloseModal={handleCloseModal}
           passwordType={passwordType}
           togglePasswordVisibility={togglePasswordVisibility}

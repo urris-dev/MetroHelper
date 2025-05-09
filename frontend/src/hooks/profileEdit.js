@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import { updateUserProfile, changeUserPhoto } from '../api/userApi';
 import { logoutUser } from '../api/authApi';
 
@@ -7,8 +8,10 @@ export const useProfileEdit = () => {
   const [passwordType, setPasswordType] = useState('password');
   const [photoPreview, setPhotoPreview] = useState(localStorage.getItem('userPhoto') || null);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -87,8 +90,11 @@ export const useProfileEdit = () => {
         await changeUserPhoto(form);
       }
 
-      window.location.reload();
+      setSuccess(true);
     } catch (err) {
+      if (err.message == 'Unauthorized') {
+        navigate('/login');
+      }
       setError(err.message);
       setIsModalOpen(true);
     } finally {
@@ -98,12 +104,14 @@ export const useProfileEdit = () => {
 
   const handleLogout = async () => {
     await logoutUser();
+    localStorage.clear();
     window.location.href = '/login';
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setError(null);
+    setSuccess(false);
   };
 
   return {
@@ -116,6 +124,7 @@ export const useProfileEdit = () => {
     isModalOpen,
     handleCloseModal,
     passwordType,
-    togglePasswordVisibility
+    togglePasswordVisibility,
+    success
   };
 };

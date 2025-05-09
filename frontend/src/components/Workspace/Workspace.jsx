@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Workspace.module.css';
 import Homepage from './Homepage';
-import CreateRequest from './CreateRequest';
+import CreateRequest from '../CreateRequest/CreateRequest.jsx';
 import ProfileEdit from '../ProfileEdit/ProfileEdit.jsx';
 import Rating from './Rating';
 import Navigation from './Navigation';

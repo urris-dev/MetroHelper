@@ -9,7 +9,7 @@ const ProfileEditForm = ({
   loading,
   handleEdit,
   handleLogout,
-  isModalOpen,
+  success,
   handleCloseModal,
   passwordType,
   togglePasswordVisibility
@@ -35,7 +35,6 @@ const ProfileEditForm = ({
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
     await handleEdit(formData);
   };
 
@@ -94,8 +93,16 @@ const ProfileEditForm = ({
 
       {error && (
         <Modal
-          isOpen={isModalOpen}
+          type="error"
           message={error}
+          onClose={handleCloseModal}
+        />
+      )}
+
+      {success && (
+        <Modal
+          type="success"
+          message="Данные успешно изменены"
           onClose={handleCloseModal}
         />
       )}

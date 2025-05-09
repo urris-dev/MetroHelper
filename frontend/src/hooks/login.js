@@ -41,7 +41,8 @@ export const useLogin = () => {
       await loginUser(payload);
       
       localStorage.setItem("userType", formData.userType);
-      navigate('/workspace');     
+      localStorage.setItem("userPhoto", `http://localhost:8000/media/${formData.email}/avatar.png`);
+      navigate('/workspace');   
     } catch (err) {
       setError(err.message);
       setIsModalOpen(true);

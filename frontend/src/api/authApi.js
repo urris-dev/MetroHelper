@@ -1,5 +1,3 @@
-import {useNavigate} from 'react-router-dom';
-
 const API_URL = 'http://localhost:8000/api/users';
 
 export const registerUser = async (payload) => {
@@ -45,7 +43,6 @@ export const logoutUser = async () => {
 }
 
 export const refreshUser = async () => {
-  const navigate = useNavigate();
   const response = await fetch(`${API_URL}/refresh`, {
     method: 'POST',
     credentials: "include",
@@ -53,7 +50,7 @@ export const refreshUser = async () => {
 
   if (!response.ok) {
     if (response.status == 401) {
-      navigate('/login');
+      throw new Error('Unauthorized');
     }
   } 
 }

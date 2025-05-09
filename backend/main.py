@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from typing import AsyncIterator
 from database import base_ormar_config
 from config import settings
@@ -9,7 +10,7 @@ from users.models import Passenger, Employee
 from users.api import user_router
 
 from req.models import Request
-
+from req.api import request_router
 
 def get_lifespan(config):
     @asynccontextmanager
@@ -37,6 +38,9 @@ app.add_middleware(
 )
 
 app.include_router(user_router)
+app.include_router(request_router)
+
+app.mount("/media", StaticFiles(directory="media"), name="media")
 
 @app.get("/")
 def home():

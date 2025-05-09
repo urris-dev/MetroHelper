@@ -39,7 +39,7 @@ const LoginForm = ({
           id="userType"
           name="userType"
           onChange={handleChange}
-          value={userType}
+          value={formData.userType}
         >
           <option value="passenger">Пассажир</option>
           <option value="employee">Сотрудник</option>
@@ -52,7 +52,7 @@ const LoginForm = ({
           type="email"
           id="email"
           name="email"
-          value={email}
+          value={formData.email}
           required
           onChange={handleChange}
         />
@@ -88,7 +88,7 @@ const LoginForm = ({
       </button>
 
       {isModalOpen && (
-        <Modal message={error} onClose={handleCloseModal} />
+        <Modal type="error" message={error} onClose={handleCloseModal} />
       )}
     </form>
   );

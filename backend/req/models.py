@@ -7,7 +7,8 @@ from users.models import Passenger, Employee
 
 
 class Request(ormar.Model):
-    ormar_config = base_ormar_config.copy(tablename="requests")
+    ormar_config = base_ormar_config.copy(tablename="requests", 
+                                          constraints=[ormar.UniqueColumns("departure_time", "passenger")])
 
     id: int = ormar.BigInteger(primary_key=True)
     luggage: bool = ormar.Boolean(nullable=False, server_default="False")

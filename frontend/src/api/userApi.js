@@ -39,7 +39,7 @@ export const changeUserPhoto = async (formData) => {
   if (!response.ok) {
     if (response.status == 401) {
       await refreshUser();
-      await updateUserProfile(payload);
+      await changeUserPhoto(payload);
     }
     throw new Error(response.statusText);
   }
