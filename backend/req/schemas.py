@@ -8,3 +8,12 @@ class RequestCreate(BaseModel):
     departure_station: Annotated[str, Field(max_length=100)]
     destination_station: Annotated[str, Field(max_length=100)]
     departure_time: time
+
+
+class Request(BaseModel):
+    id: int
+    luggage: bool
+    departure_station: str
+    destination_station: str
+    departure_time: time
+    

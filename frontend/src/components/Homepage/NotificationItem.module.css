@@ -1,0 +1,16 @@
+.notifications-list__item {
+    display: flex;
+    flex-direction: column;
+    border-radius: 15px;
+    padding: 0.4em;
+    background-color: rgba(0,0,0,0.1);
+    padding: 1.5rem;
+}
+
+.notification-item__title {
+    text-align: center;
+}
+
+.notification-item__description {
+    text-align: left;
+}

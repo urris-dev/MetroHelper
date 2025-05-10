@@ -12,6 +12,8 @@ from users.api import user_router
 from req.models import Request
 from req.api import request_router
 
+from notifications.api import notification_router
+
 def get_lifespan(config):
     @asynccontextmanager
     async def lifespan(_: FastAPI) -> AsyncIterator[None]:
@@ -28,7 +30,6 @@ def get_lifespan(config):
 app = FastAPI(lifespan=get_lifespan(base_ormar_config))
 
 origins = [settings.CLIENT_ORIGIN]
-print(settings.CLIENT_ORIGIN)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -39,6 +40,7 @@ app.add_middleware(
 
 app.include_router(user_router)
 app.include_router(request_router)
+app.include_router(notification_router)
 
 app.mount("/media", StaticFiles(directory="media"), name="media")
 

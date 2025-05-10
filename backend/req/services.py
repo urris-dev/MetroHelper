@@ -1,5 +1,5 @@
 from fastapi import Response, HTTPException
-from typing import Union
+from typing import List, Union
 
 from oauth2 import AuthJWT
 from . import schemas, models
@@ -30,4 +30,21 @@ async def create_request(request: schemas.RequestCreate, Authorize: AuthJWT) -> 
             await executor.update(['status'])
         await _request.update(['executors'])
 
+    return Response(status_code=200)
+
+
+async def get_requests(Authorize: AuthJWT) -> List[schemas.Request]:
+    email = Authorize.get_jwt_subject()
+    user = await Passenger.objects.select_related("requests").order_by("-requests__id").get(email=email)
+    return user.requests
+
+
+async def delete_request(request_id: int) -> Union[HTTPException, Response]:
+    try:
+        request = await models.Request.objects.get(id=request_id)
+    except:
+        raise HTTPException(status_code=404, detail="Проект с переданным идентификатором не найден.")
+    
+    await request.delete()
+    
     return Response(status_code=200)

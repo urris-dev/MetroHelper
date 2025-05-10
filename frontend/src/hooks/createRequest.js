@@ -7,11 +7,23 @@ export const useCreateRequest = () => {
   const [success, setSuccess] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
+  const [error, setError] = useState(null);
+
+  const validateDepartureTime = async (formData) => {
+    const now = new Date();
+    const todayStr = now.toISOString().split('T')[0];
+    const departureDateTime = new Date(`${todayStr}T${formData.departure_time}`);
+
+    if (departureDateTime <= now) {
+      throw new Error('Время отправления должно быть поздней текущего момента');
+    }
+  }
 
   const handleSubmit = async (formData) => {
     try {
       setLoading(true);
       setSuccess(false);
+      await validateDepartureTime(formData);
 
       const requestData = {
         ...formData,
@@ -20,10 +32,13 @@ export const useCreateRequest = () => {
 
       await submitRequest(requestData);
       setSuccess(true);
+      window.location.reload();
     } catch (err) {
       if (err.message == 'Unauthorized') {
         navigate('/login');
       }
+      setError(err.message);
+      setIsModalOpen(true);
     } finally {
       setLoading(false);
     }
@@ -32,6 +47,7 @@ export const useCreateRequest = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSuccess(false);
+    setError(null);
   };
 
   return {
@@ -39,5 +55,7 @@ export const useCreateRequest = () => {
     success,
     handleSubmit,
     handleCloseModal,
+    error, 
+    isModalOpen,
   };
 };

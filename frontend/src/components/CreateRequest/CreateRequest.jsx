@@ -6,7 +6,7 @@ import Modal from '../common/Modal/Modal.jsx';
 const CreateRequest = () => {
   const formRef = useRef(null);
 
-  const { loading, success, handleSubmit, handleCloseModal } = useCreateRequest();
+  const { loading, success, handleSubmit, handleCloseModal, error, isModalOpen } = useCreateRequest();
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -53,6 +53,14 @@ const CreateRequest = () => {
         <Modal
         type="success"
         message='Заявка успешно создана'
+        onClose={handleCloseModal}
+        />
+      )}
+
+      {isModalOpen && (
+        <Modal
+        type="error"
+        message={error}
         onClose={handleCloseModal}
         />
       )}
