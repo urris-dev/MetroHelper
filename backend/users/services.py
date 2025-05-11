@@ -127,3 +127,10 @@ async def change_user_photo(photo: UploadFile, Authorize: oauth2.AuthJWT) -> Res
         f.write(await photo.read())
 
     return Response(status_code=200)
+
+
+async def get_employee_rating(Authorize: oauth2.AuthJWT) -> float:
+    email = Authorize.get_jwt_subject()
+    employee = await models.Employee.objects.get(email=email)
+
+    return (employee.rating / employee.ratings_count)

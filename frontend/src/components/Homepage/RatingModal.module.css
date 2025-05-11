@@ -1,0 +1,89 @@
+.modal__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal__content {
+  background: white;
+  padding: 2rem;
+  border-radius: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  z-index: 1001;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.radio-input {
+  display: flex;
+  scale: 0.15;
+  transform: rotate(180deg);
+}
+
+.star {
+  margin: 1em;
+  appearance: none;
+  --color: rgba(0,0,0,0.25);
+  border-left: 6.4721359549996em solid transparent !important;
+  border-right: 6.4721359549996em solid transparent !important;
+  border-bottom: 4em solid var(--color) !important;
+  transform: rotate(0deg);
+  cursor: pointer;
+  background-color: #fff !important;
+}
+
+.star:before {
+  content: "";
+  border-left: 6.4721359549996em solid transparent !important;
+  border-right: 6.4721359549996em solid transparent !important;
+  border-top: 4em solid var(--color);
+  position: absolute;
+  left: -6.4721359549996em;
+  transform: rotate(108deg);
+}
+
+.star:after {
+  content: "";
+  border-left: 6.4721359549996em solid transparent;
+  border-right: 6.4721359549996em solid transparent;
+  border-top: 4em solid var(--color);
+  position: absolute;
+  left: -6.4721359549996em;
+  transform: rotate(253deg);
+}
+
+.radio-input > .star:hover ~ .star,
+.radio-input > .star:hover,
+.radio-input > .star:checked ~ .star,
+.radio-input > .star:checked {
+  --color: yellow;
+}
+
+.radio-input > .star:checked ~ .star,
+.radio-input > .star:checked {
+  animation: rotate 0.5s linear forwards;
+  transform: rotate(360deg);
+  transition: transform 0.3s;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    scale: 1.5;
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

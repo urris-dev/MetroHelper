@@ -69,7 +69,7 @@ const useRegistration = () => {
       navigate('/login', {state: {email: formData.email, userType: formData.userType}});      
     } catch (err) {
       if (err.message == '409 Error') {
-        navigate('/login', {state: {email: formData.email}});
+        navigate('/login', {state: {email: formData.email, userType: formData.userType}});
       }
       setError(err.message);
       setIsModalOpen(true);

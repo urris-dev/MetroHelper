@@ -21,7 +21,6 @@ function Login() {
     <div className={styles['login-container']}>
       <h2 className={styles['login-form__title']}>Вход</h2>
       <Link to="/register" className={styles['login-container__register-link']}>Нет аккаунта? Зарегистрироваться.</Link>
-      <Link to="/workspace" className={styles['login-container__register-link']}>Основная страница.</Link>
       <LoginForm
         showPassword={showPassword}
         passwordType={passwordType}

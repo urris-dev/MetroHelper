@@ -3,9 +3,10 @@ import { useHomepage } from '../../hooks/homepage.js';
 import RequestItem from './RequestItem';
 import NotificationItem from './NotificationItem';
 import styles from './Homepage.module.css';
+import Modal from './Modal.jsx';
 
 const Homepage = (userType) => {
-  const { requests, notifications, loading, error } = useHomepage(userType);
+  const { requests, notifications, loading, error, isModalOpen, activeRequest } = useHomepage(userType);
   if (loading) {
     return <div>Загрузка...</div>;
   }
@@ -16,6 +17,12 @@ const Homepage = (userType) => {
 
   return (
     <>
+      {isModalOpen && (
+        <Modal
+          request={activeRequest}
+        />
+      )}
+
       {userType['userType'] == 'passenger' && (
         <>
           <h2>Ваши заявки</h2>

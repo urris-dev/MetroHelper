@@ -44,3 +44,20 @@ export const changeUserPhoto = async (formData) => {
     throw new Error(response.statusText);
   }
 };
+
+export const getEmployeeRating = async () => {
+  const response = await fetch(`${API_URL}/get-employee-rating`, {
+    method: 'GET',
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    if (response.status == 401) {
+      await refreshUser();
+      await getEmployeeRating();
+    }
+    throw new Error(response.statusText);
+  }  
+
+  return await response.text();
+}

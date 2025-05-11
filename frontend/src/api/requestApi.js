@@ -55,3 +55,37 @@ export const deleteRequest = async (requestId) => {
     throw new Error((await response.json()).detail);
   }
 }
+
+export const fetchActiveRequest = async (time) => {
+  const response = await fetch(`${API_URL}/check-active-request?current_time=${time}`, {
+    method: 'GET',
+    credentials: 'include'
+  });
+
+  if (!response.ok) {
+    if (response.status == 401) {
+      await refreshUser();
+      await fetchActiveRequest(time);
+      return;
+    } else {
+      return null;
+    }
+  }
+
+  return await response.json();
+}
+
+export const ratingRequest = async (requestId, assessment) => {
+  const response = await fetch(`${API_URL}/rating-request?request_id=${requestId}&assessment=${assessment}`, {
+    method: 'POST',
+    credentials: 'include'
+  });
+
+  if (!response.ok) {
+    if (response.status == 401) {
+      await refreshUser();
+      await ratingRequest(requestId, assessment);
+      return;
+    }
+  }
+}

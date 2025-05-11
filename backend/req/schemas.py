@@ -17,3 +17,9 @@ class Request(BaseModel):
     destination_station: str
     departure_time: time
     
+
+class ActiveRequest(BaseModel):
+    id: int
+    user_type: str
+    departure_station: str
+    destination_station: str

@@ -44,3 +44,8 @@ async def edit_user_info(user: schemas.UserEdit, Authorize: oauth2.AuthJWT = Dep
 @user_router.post("/change-user-photo", dependencies=[Depends(check_access_token)], responses={401: {}})
 async def change_user_photo(photo: UploadFile = File(...), Authorize: oauth2.AuthJWT = Depends()):
     return await services.change_user_photo(photo, Authorize)    
+
+
+@user_router.get("/get-employee-rating", response_model=float, dependencies=[Depends(check_access_token)], responses={401: {}})
+async def get_employee_rating(Authorize: oauth2.AuthJWT = Depends()):
+    return await services.get_employee_rating(Authorize)
