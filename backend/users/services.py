@@ -30,6 +30,13 @@ async def save_user_photo(email: str, userType: str, photo: UploadFile):
 async def create_user(user: schemas.UserRegister) -> Union[HTTPException, Response]:
     if user.userType == "employee":
         try:
+            await models.Passenger.objects.get(email=user.email)
+            raise HTTPException(status_code=400, detail="Невозможно зарегистрировать пользователя данного типа с переданной электронной почтой.")
+        except HTTPException as e:
+            raise e
+        except: pass
+
+        try:
             await models.Employee.objects.get(email=user.email)
             raise HTTPException(status_code=409, detail="Данный пользователь уже зарегистрирован.")
         except HTTPException as e:
@@ -39,6 +46,13 @@ async def create_user(user: schemas.UserRegister) -> Union[HTTPException, Respon
         user.password = await utils.hash_data(user.password)
         await models.Employee.objects.create(**user.model_dump(exclude={"userType", "passengerType"}), photo="")
     elif user.userType == 'passenger':
+        try:
+            await models.Employee.objects.get(email=user.email)
+            raise HTTPException(status_code=400, detail="Невозможно зарегистрировать пользователя данного типа с переданной электронной почтой.")
+        except HTTPException as e:
+            raise e
+        except: pass
+
         try:
             await models.Passenger.objects.get(email=user.email)
             raise HTTPException(status_code=409, detail="Данный пользователь уже зарегистрирован.")

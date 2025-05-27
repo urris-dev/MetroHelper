@@ -13,7 +13,7 @@ export const registerUser = async (payload) => {
       if (response.status == 409) {
         throw new Error('409 Error');
       }
-      throw new Error(response.statusText);
+      throw new Error((await response.json()).detail);
     }    
   };
 
